@@ -4,7 +4,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -20,40 +19,43 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity {
+public class Register extends AppCompatActivity {
 
-    EditText UsernameEt, PasswordEt;
-    String URL = "http://hamza619.site88.net/login.php";
+    EditText name, surname, age, username, password;
+    String URL_register = "http://hamza619.site88.net/register.php";
     ProgressDialog progress;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_register);
 
-        UsernameEt = (EditText) findViewById(R.id.etusername);
-        PasswordEt = (EditText) findViewById(R.id.etpassword);
+        name = (EditText)findViewById(R.id.et_name);
+        surname = (EditText)findViewById(R.id.et_surname);
+        age = (EditText)findViewById(R.id.et_age);
+        username = (EditText)findViewById(R.id.et_username);
+        password = (EditText)findViewById(R.id.et_password);
     }
 
-    public void OnLogin(View view) {
-        String username = UsernameEt.getText().toString();
-        String password = PasswordEt.getText().toString();
-        progress = new ProgressDialog(MainActivity.this);
-        progress.setTitle("Registering");
-        progress.setMessage("Wait while we register you...");
+    public void OnReg(View view){
+        String str_name = name.getText().toString();
+        String str_surname = surname.getText().toString();
+        String str_age = age.getText().toString();
+        String str_username = username.getText().toString();
+        String str_password= password.getText().toString();
+        progress = new ProgressDialog(Register.this);
+        progress.setTitle("Checking credentials");
+        progress.setMessage("Wait while we verify you...");
         progress.show();
-        checkLogin(username, password);
+        checkLogin(str_name,str_surname,str_age,str_username,str_password);
 
     }
 
-    public void OpenReg(View view){
-        startActivity(new Intent(this, Register.class));
-    }
 
-
-    private void checkLogin(final String name, final String pass) {
+    private void checkLogin(final String str_name, final String str_surname, final String str_age, final String str_username, final String str_password) {
         StringRequest strReq = new StringRequest(Request.Method.POST,
-                URL, new Response.Listener<String>() {
+                URL_register, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
@@ -97,8 +99,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("user_name", name);
-                params.put("password", pass);
+                params.put("Name",str_name);
+                params.put("Surname",str_surname);
+                params.put("Age",str_age);
+                params.put("Username",str_username);
+                params.put("Password",str_password);
+
 
                 return params;
             }
